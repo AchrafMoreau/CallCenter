@@ -1,4 +1,4 @@
-import { Staff } from "../Models/staffModel"
+import { Staff } from "../Models/staffModel.js"
 import Jwt  from "jsonwebtoken"
 import asyncHandler from "express-async-handler"
 

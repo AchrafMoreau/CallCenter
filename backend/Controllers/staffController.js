@@ -6,7 +6,7 @@ import { generateToken } from "../util/generateToken.js";
 const Login = asyncHandel( async(req, res)=>{
     const { email , password} = req.body
 
-    console.log(req.body)
+    console.log(email, password)
     const staff = await Staff.findOne({email})
     if(staff && staff.password === password){
         
