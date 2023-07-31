@@ -1,15 +1,16 @@
 import mongoose from "mongoose"
 
 
-const MemebrsProject = mongoose.Schema({
-    staff:{
+const MemebrsProjectSchema = mongoose.Schema({
+    _id:{
         required: true,
-        type: Number,
-        // it has to be type objectId and red to staff tabel
-    }
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    },
+    
 })
 
-const ClientModel = mongoose.Schema({
+const ProjectSchema = mongoose.Schema({
     project_name:{
         required: [true, "this filed is required"],
         type: String
@@ -21,7 +22,6 @@ const ClientModel = mongoose.Schema({
     pack:{
         required:true,
         type: Number, 
-        // it has to be a type objectId and ref to pack table 
     },
     password:{
         required: [true, "this filed is required"],
@@ -31,20 +31,23 @@ const ClientModel = mongoose.Schema({
         required: [true, "this filed is required"],
         type: String
     },
-    project_memebers: [MemebrsProject],
+    project_memebers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users"
+    }],
     defualt_status:{
         required:true,
-        type: Number,
-        // it has to be a type objectId and red to Status table
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "status"
     },
     close_status:{
         required: true,
-        type: Number,
-        // it has to be a type objectId and red to Status table
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "status"
     }
 },{
     timestamps:true
 })
 
-const Client = mongoose.model("client", ClientModel)
+const Client = mongoose.model("client", ProjectSchema)
 export { Client }

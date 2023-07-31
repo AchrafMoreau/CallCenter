@@ -4,6 +4,7 @@ import dbConnection from './Config/dbConnection.js'
 import dotenv from 'dotenv'
 import StaffRoute from './Routes/staffRoute.js'
 import { NotFound, errHandler } from './MiddleWares/errorMiddelWare.js'
+import adminRoute from './Routes/adminRoute.js'
 
 // init application
 dotenv.config()
@@ -13,7 +14,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 app.use("/api/staff", StaffRoute)
-
+app.use("/api/admin", adminRoute)
 
 // Api
 app.get("/", (req, res)=>{

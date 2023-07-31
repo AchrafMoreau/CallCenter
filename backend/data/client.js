@@ -8,9 +8,6 @@ export const ClientData = [
         formLayout: "shopify",
         defaultStatus: 3,
         pack: 2,
-        project_memebers: [{staff: 1},{staff: 2}, {staff: 3}],
-        close_status: 2,
-        defualt_status: 4,
         // isShopify: true,
     },
     {
@@ -20,9 +17,6 @@ export const ClientData = [
         formLayout: "wordPress",
         defaultStatus: 1,
         pack: 2,
-        project_memebers: [{staff: 1},{staff: 2}, {staff: 3}],
-        close_status: 2,
-        defualt_status: 4,
         // isShopify: false,
     }
 ]

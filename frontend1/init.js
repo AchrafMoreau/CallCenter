@@ -1,8 +1,0 @@
-window.process = {
-    env: {
-        MONGODB_TOKEN :"mongodb+srv://elachraf6:Dss7MZwmBsJjwt8L@cluster0.kfyfr0c.mongodb.net/CallCenter?retryWrites=true&w=majority",
-        PORT :'',
-        JWT_SECRET : "profl7faridarb18route",
-        ENV_MODE : 'development',
-    }
-} 

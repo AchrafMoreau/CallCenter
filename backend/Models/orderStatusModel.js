@@ -1,7 +1,6 @@
 import mongoose from "mongoose"
 
-const OrderStatusModel = mongoose.Schema({
-    id: Number,
+const StatusSchema = mongoose.Schema({
     name:{
         type: String,
         required: [true, "this filed is required"]
@@ -42,5 +41,5 @@ const OrderStatusModel = mongoose.Schema({
 })
 
 
-const Status = mongoose.model("status", OrderStatusModel)
+const Status = mongoose.model("status", StatusSchema)
 export { Status }

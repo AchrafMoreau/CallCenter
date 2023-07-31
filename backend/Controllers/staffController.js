@@ -1,22 +1,22 @@
 import mongoose from "mongoose";
 import asyncHandel from 'express-async-handler'
-import { Staff } from "../Models/staffModel.js";
+import { User } from "../Models/staffModel.js";
 import { generateToken } from "../util/generateToken.js";
 
 const Login = asyncHandel( async(req, res)=>{
     const { email , password} = req.body
 
     console.log(req.body)
-    const staff = await Staff.findOne({email})
-    if(staff && staff.password === password){
+    const user = await User.findOne({email})
+    if(user && user.password === password){
         
         res.status(200).json({
-            first_name: staff.first_name,
-            last_name: staff.last_name,
-            username: staff.username,
-            email: staff.email,
-            role_id: staff.role_id,
-            token: generateToken(staff._id),
+            first_name: user.first_name,
+            last_name: user.last_name,
+            username: user.username,
+            email: user.email,
+            role_id: user.role_id,
+            token: generateToken(user._id),
         })
     }else{
         res.status(400)
@@ -27,13 +27,13 @@ const Login = asyncHandel( async(req, res)=>{
 const registerOperatoer = asyncHandel( async(req, res)=>{
     const { username, first_name, last_name, email, password, role_id, phone } = req.body
 
-    const alreadyExist = await Staff.findOne({email})
+    const alreadyExist = await User.findOne({email})
     if(alreadyExist){
         res.status(400)
         throw new Error("User Already Exist")
     }
 
-    const staffCreation = await Staff.create({
+    const userCreation = await User.create({
         email,
         username,
         first_name,
@@ -43,12 +43,12 @@ const registerOperatoer = asyncHandel( async(req, res)=>{
         phone
     })
 
-    if(staffCreation){
+    if(userCreation){
         res.status(200).json({
-            _id: staffCreation._id,
-            email: staffCreation.email,
-            username: staffCreation.username,
-            password:  staffCreation.password
+            _id: userCreation._id,
+            email: userCreation.email,
+            username: userCreation.username,
+            password:  userCreation.password
         })
     }else{
         res.status(400)
@@ -56,20 +56,20 @@ const registerOperatoer = asyncHandel( async(req, res)=>{
     }
 })
 
-const staffUpdate = asyncHandel( async(req,res)=>{
+const userUpdate = asyncHandel( async(req,res)=>{
     
-    const staff = await Staff.finndById(req.user._id)
-    if(staff){
-        staff.first_name = req.body.first_name || staff.first_name
-        staff.last_name = req.body.last_name || staff.last_name
-        staff.username = req.body.username || staff.username
-        staff.email = req.body.email || staff.email
-        staff.phone = req.body.phone || staff.phone
-        if(staff.password){
-            staff.password = req.body.password || staff.password
+    const user = await User.finndById(req.user._id)
+    if(user){
+        user.first_name = req.body.first_name || user.first_name
+        user.last_name = req.body.last_name || user.last_name
+        user.username = req.body.username || user.username
+        user.email = req.body.email || user.email
+        user.phone = req.body.phone || user.phone
+        if(user.password){
+            user.password = req.body.password || user.password
         }
 
-        const updated = await staff.save()
+        const updated = await user.save()
 
         if(updated){
             res.status(200).json({
@@ -82,26 +82,26 @@ const staffUpdate = asyncHandel( async(req,res)=>{
             })
         }else{
             res.status(400)
-            throw new Error("Staff Not Found")
+            throw new Error("user Not Found")
         }
     }
 
 })
 
-const adminUpdateStaff = asyncHandel(async(req, res)=>{
-    const staff = await Staff.finndById(req.user._id)
-    if(staff){
-        staff.first_name = req.body.first_name || staff.first_name
-        staff.last_name = req.body.last_name || staff.last_name
-        staff.username = req.body.username || staff.username
-        staff.email = req.body.email || staff.email
-        staff.phone = req.body.phone || staff.phone
-        staff.role_id = req.body.role_id || staff.role_id
-        if(staff.password){
-            staff.password = req.body.password || staff.password
+const adminUpdateuser = asyncHandel(async(req, res)=>{
+    const user = await User.finndById(req.user._id)
+    if(user){
+        user.first_name = req.body.first_name || user.first_name
+        user.last_name = req.body.last_name || user.last_name
+        user.username = req.body.username || user.username
+        user.email = req.body.email || user.email
+        user.phone = req.body.phone || user.phone
+        user.role_id = req.body.role_id || user.role_id
+        if(user.password){
+            user.password = req.body.password || user.password
         }
 
-        const updated = await staff.save()
+        const updated = await User.save()
 
         if(updated){
             res.status(200).json({
@@ -114,7 +114,7 @@ const adminUpdateStaff = asyncHandel(async(req, res)=>{
             })
         }else{
             res.status(400)
-            throw new Error("Staff Not Found")
+            throw new Error("user Not Found")
         }
     }
 })
@@ -122,6 +122,6 @@ const adminUpdateStaff = asyncHandel(async(req, res)=>{
 export { 
     Login,
     registerOperatoer,
-    staffUpdate,
-    adminUpdateStaff,
+    userUpdate,
+    adminUpdateuser,
 }
