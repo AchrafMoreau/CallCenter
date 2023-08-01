@@ -40,6 +40,18 @@ const UserSchema = mongoose.Schema({
     phone:{
         type: String
     },
+    imgProfie:{
+        type: String,
+        default: "/images/defaultProfile.png",
+    },
+    status: {
+        type: String,
+        default: false
+    },
+    operatorStatus:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "status" 
+    }],
     role_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

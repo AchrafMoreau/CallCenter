@@ -1,21 +1,21 @@
 import mongoose from "mongoose";
 
-const ProductSchema = mongoose.Schema({
-    name:{
-        type: String,
-        required: true
-    },
-    price:{
-        type: String,
-        required: true
-    },
-    discprition: String
-})
+
 const OrderSchema = mongoose.Schema({
-    name:{
+    client_id:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: "clients",
+    },
+    customer_name:{
         type: String,
         required: true
     },
+    customer_phone:{
+        type: String,
+        required: true
+    },
+    customer_email: String,
     city:{
         type: String,
         required: true
@@ -24,11 +24,9 @@ const OrderSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    Product:[ProductSchema],
-    Price:{
-        type: Number,
-        required: true
-    },
+    Products: [{
+        type: String,
+    }],
     qty:{
         type: Number,
         required: true
@@ -37,14 +35,13 @@ const OrderSchema = mongoose.Schema({
         type: Number,
         required: true
     },
-    phone:{
-        type: Number,
-        required: true
-    },
     status:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "status"
     }
+},{
+    timestamps: true
 })
 
-export { OrderSchema , ProductSchema }  
+const Orders = mongoose.model("orders", OrderSchema)
+export { Orders }

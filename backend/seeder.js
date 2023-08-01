@@ -9,19 +9,19 @@ import { StatusData } from "./data/orderStatusdb.js"
 import { RolesData } from "./data/rolesdb.js"
 import { UserData } from "./data/staffdb.js"
 import { ClientData } from "./data/client.js"
+import { Orders } from "./Models/OrderModels.js"
+import { OrdersData } from "./data/ordersData.js"
 
 dbConnection()
 
 const InsertData = async()=>{
     try{
+        await Orders.deleteMany()
         await User.deleteMany()
         await Client.deleteMany()
         await Status.deleteMany()
         await Roles.deleteMany()
 
-        // await Staff.insertMany(StaffData)
-        // await Client.insertMany(ClientData)
-        // await Status.insertMany(OrderStatusData)
         const roles = await Roles.insertMany(RolesData)
 
         const usersWithThierRoles = UserData.map(predata=>({
@@ -33,7 +33,6 @@ const InsertData = async()=>{
         const users = await User.insertMany(usersWithThierRoles)
         const projects = ClientData.map(prevData=>({
             ...prevData,
-            // project_memebers: [{user:users[1]._id}, {user: users[0]._id},{user :users[2]._id}] ,
             project_memebers: [users[1]._id, users[0]._id,users[2]._id] ,
             defualt_status: status[0]._id ,
             close_status: status[2]._id,
@@ -41,8 +40,7 @@ const InsertData = async()=>{
 
 
         await Client.insertMany(projects)
-
-
+        await Orders.insertMany(OrdersData)
 
 
 
