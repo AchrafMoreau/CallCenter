@@ -1,26 +1,48 @@
 import dbConnection from "./Config/dbConnection.js"
-import {Roles, Staff} from './Models/staffModel.js'
+import {Roles, User } from './Models/staffModel.js'
 import { Client } from "./Models/ClientModel.js"
 import { Status } from "./Models/orderStatusModel.js"
+// import { User } from "./Models/orderStatusModel.js"
 
-import { OrderStatusData } from "./data/orderStatusdb.js"
+// import { Status } from "./data/orderStatusdb.js"
+import { StatusData } from "./data/orderStatusdb.js"
 import { RolesData } from "./data/rolesdb.js"
-import { StaffData } from "./data/staffdb.js"
+import { UserData } from "./data/staffdb.js"
 import { ClientData } from "./data/client.js"
+import { Orders } from "./Models/OrderModels.js"
+import { OrdersData } from "./data/ordersData.js"
 
 dbConnection()
 
 const InsertData = async()=>{
     try{
-        await Staff.deleteMany()
+        await Orders.deleteMany()
+        await User.deleteMany()
         await Client.deleteMany()
         await Status.deleteMany()
         await Roles.deleteMany()
 
-        await Staff.insertMany(StaffData)
-        await Client.insertMany(ClientData)
-        await Status.insertMany(OrderStatusData)
-        await Roles.insertMany(RolesData)
+        const roles = await Roles.insertMany(RolesData)
+
+        const usersWithThierRoles = UserData.map(predata=>({
+            ...predata,
+            role_id: roles[0]._id
+        }))
+
+        const status = await Status.insertMany(StatusData)
+        const users = await User.insertMany(usersWithThierRoles)
+        const projects = ClientData.map(prevData=>({
+            ...prevData,
+            project_memebers: [users[1]._id, users[0]._id,users[2]._id] ,
+            defualt_status: status[0]._id ,
+            close_status: status[2]._id,
+        })) 
+
+
+        await Client.insertMany(projects)
+        await Orders.insertMany(OrdersData)
+
+
 
         console.log("inerting Status => All good ")
         process.exit()

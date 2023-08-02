@@ -7,8 +7,7 @@ dotenv.config()
 dbConnection()
 
 
-const RolesModel = mongoose.Schema({
-    id: Number,
+const RolesSchema = mongoose.Schema({
     role_name:{
         required: [true, "this filed is required"],
         type: String,
@@ -19,7 +18,7 @@ const RolesModel = mongoose.Schema({
 },{
     timestamps: true
 })
-const StaffModel = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     first_name: {
         required: true,
         type:String
@@ -41,8 +40,20 @@ const StaffModel = mongoose.Schema({
     phone:{
         type: String
     },
+    imgProfie:{
+        type: String,
+        default: "/images/defaultProfile.png",
+    },
+    status: {
+        type: String,
+        default: false
+    },
+    operatorStatus:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "status" 
+    }],
     role_id: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: "roles"
     },
@@ -54,7 +65,7 @@ const StaffModel = mongoose.Schema({
 
 
 
-const Staff = mongoose.model("staff", StaffModel) 
-const Roles = mongoose.model("roles", RolesModel) 
+const User = mongoose.model("user", UserSchema) 
+const Roles = mongoose.model("roles", RolesSchema) 
  
-export { Staff, Roles }
+export { User, Roles }

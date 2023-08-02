@@ -1,6 +1,5 @@
-export const OrderStatusData = [
+export const StatusData = [
     {
-        id: 1,
         name:"New Order",
         Max_appearence: 10,
         description: "",
@@ -12,7 +11,6 @@ export const OrderStatusData = [
         passOrderToNewOperator: 3
     },
     {
-        id: 2,
         name:"Confirm",
         Max_appearence: 10,
         description: "",
@@ -24,7 +22,6 @@ export const OrderStatusData = [
         passOrderToNewOperator: 3
     },
     {
-        id: 3,
         name:"Cancelled",
         Max_appearence: 0,
         description: "",
