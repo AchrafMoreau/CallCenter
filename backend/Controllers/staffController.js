@@ -6,16 +6,10 @@ import { generateToken } from "../util/generateToken.js";
 const Login = asyncHandel( async(req, res)=>{
     const { email , password} = req.body
 
-<<<<<<< HEAD
-    console.log(email, password)
-    const staff = await Staff.findOne({email})
-    if(staff && staff.password === password){
-=======
+
     console.log(req.body)
     const user = await User.findOne({email})
-    if(user && user.password === password){
->>>>>>> commit
-        
+    if(user && user.password === password){        
         res.status(200).json({
             first_name: user.first_name,
             last_name: user.last_name,

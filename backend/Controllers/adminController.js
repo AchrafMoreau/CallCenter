@@ -7,7 +7,7 @@ import { Status } from '../Models/orderStatusModel.js'
 
 // Everything Related To Projects/Client
 const viewAllProjects = asyncHandler( async(req, res)=>{
-    const projects = await Client.find({})
+    const projects = await Client.find({}).populate(["role_id", "defualt_status"])
     if(projects){
         res.status(200).json(projects)
     }else{
@@ -120,7 +120,7 @@ const addingOperator = asyncHandler( async(req, res)=>{
     } = req.body
     
     console.log(req.body)
-    const createed = await User.create({
+    let createed = await User.create({
         first_name,
         last_name,
         email,
@@ -134,13 +134,8 @@ const addingOperator = asyncHandler( async(req, res)=>{
     })
 
     if(createed){
-        res.status(200).json({
-            first_name: createed.first_name,
-            last_name: createed.last_name,
-            email: createed.email,
-            username: createed.username,
-            role: createed.role_id,
-        })
+        createed = await createed.populate(["role_id", "operatorStatus"])
+        res.status(200).json(createed)
     }else{
         res.status(400)
         throw new Error("No User Was Created..!")
@@ -161,19 +156,10 @@ const modifyOperator = asyncHandler( async(req, res)=>{
         operator.phone = req.body.phone || operator.phone
         operator.status = req.body.status || operator.status
 
-        const updatedoperator = await operator.save()
+        let updatedoperator = await operator.save()
         if(updatedoperator){
-            res.status(200).json({
-                first_name: updatedoperator.first_name,
-                last_name: updatedoperator.last_name,
-                email: updatedoperator.email,
-                username: updatedoperator.username,
-                imgProfile: updatedoperator.imgProfile,
-                operatorStatus: updatedoperator.operatorStatus,
-                role_id: updatedoperator.role_id,
-                status: updatedoperator.status,
-                phone: updatedoperator.phone
-            })
+            updatedoperator = await updatedoperator.populate(["role_id", "operatorStatus"])
+            res.status(200).json(updatedoperator)
         }
     }else{
         res.status(400)
@@ -198,7 +184,7 @@ const deleteOperator = asyncHandler( async(req, res)=>{
     }
 })
 const viewAllOperator = asyncHandler( async(req, res)=>{
-    const operators = await User.find({})
+    const operators = await User.find({}).populate(["role_id", "operatorStatus"])
     if(operators){
         res.status(200).json(operators)
     }else{
@@ -210,7 +196,7 @@ const viewAllOperator = asyncHandler( async(req, res)=>{
 
 // Everything Related To Orders
 const viewAllOrders = asyncHandler( async(req, res)=>{
-    const orders = await Orders.find({})
+    const orders = await Orders.find({}).populate(["client_id", "status"])
     if(orders){
         res.status(200).json(orders)
     }else{
@@ -219,7 +205,7 @@ const viewAllOrders = asyncHandler( async(req, res)=>{
     }
 })
 const viewOrder = asyncHandler( async(req, res)=>{
-    const order = await Orders.findById(req.params.id)
+    const order = await Orders.findById(req.params.id).populate(["client_id", "status"])
     if(order){
         res.status(200).json(order)
     }else{
@@ -228,11 +214,15 @@ const viewOrder = asyncHandler( async(req, res)=>{
     }
 })
 const addingOrders = asyncHandler( async(req, res)=>{
-    const created = await Orders.insertMany(req.body)
+    let data
+    if(!Array.isArray(req.body)){
+        data = [req.body]
+    }
+    let created = await Orders.insertMany(data)
     
     if(created){
         res.status(200).json({
-            message: "Orders Created Successfully"
+            message: "Orders have been created successfully"
         })
     }else{
         res.status(400)
@@ -253,19 +243,10 @@ const modifyOrders = asyncHandler( async(req, res)=>{
         order.customer_phone = req.body.customer_phone || order.customer_phone
         order.status = req.body.status || order.status
 
-        const updatedorder = await order.save()
+        let updatedorder = await order.save()
         if(updatedorder){
-            res.status(200).json({
-                customer_email: updatedorder.customer_email,
-                customer_name: updatedorder.customer_name,
-                city: updatedorder.city,
-                Address: updatedorder.Address,
-                Products: updatedorder.Products,
-                totalPrice: updatedorder.totalPrice,
-                qty: updatedorder.qty,
-                status: updatedorder.status,
-                customer_phone: updatedorder.customer_phone,
-            })
+            updatedorder = await updatedorder.populate(["client_id", "status"])
+            res.status(200).json(updatedorder)
         }else{
             res.status(400)
             throw new Error("Failed At Updating")
@@ -296,7 +277,7 @@ const deleteOrder = asyncHandler( async(req, res)=>{
 
 // Everything Related To Status
 const viewAllStatus = asyncHandler( async(req, res)=>{
-    const status = await Status.find({})
+    const status = await Status.find({}).populate(["role_id", "defualt_status"])
     if(status){
         res.status(200).json(status)
     }else{
@@ -305,7 +286,7 @@ const viewAllStatus = asyncHandler( async(req, res)=>{
     }
 })
 const viewStatus = asyncHandler( async(req, res)=>{
-    const status = await Status.findById(req.params.id)
+    const status = await Status.findById(req.params.id).populate(["role_id", "defualt_status"])
     if(status){
         res.status(200).json(status)
     }else{

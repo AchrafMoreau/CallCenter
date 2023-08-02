@@ -67,5 +67,5 @@ const UserSchema = mongoose.Schema({
 
 const User = mongoose.model("user", UserSchema) 
 const Roles = mongoose.model("roles", RolesSchema) 
- 
+
 export { User, Roles }

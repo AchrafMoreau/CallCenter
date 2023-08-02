@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Staff } from "../Models/staffModel.js"
-=======
 import { Roles, User } from "../Models/staffModel.js"
->>>>>>> commit
 import Jwt  from "jsonwebtoken"
 import asyncHandler from "express-async-handler"
 import { Status } from "../Models/orderStatusModel.js"

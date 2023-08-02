@@ -1,14 +1,14 @@
 import mongoose from "mongoose"
 
 
-const MemebrsProjectSchema = mongoose.Schema({
-    _id:{
-        required: true,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-    },
+// const MemebrsProjectSchema = mongoose.Schema({
+//     _id:{
+//         required: true,
+//         type: mongoose.Schema.Types.ObjectId,
+//         ref: "user"
+//     },
     
-})
+// })
 
 const ProjectSchema = mongoose.Schema({
     project_name:{
@@ -33,7 +33,7 @@ const ProjectSchema = mongoose.Schema({
     },
     project_memebers: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "users"
+        ref: "user"
     }],
     defualt_status:{
         required:true,
