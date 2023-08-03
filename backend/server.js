@@ -7,6 +7,7 @@ import { NotFound, errHandler } from './MiddleWares/errorMiddelWare.js'
 import adminRoute from './Routes/adminRoute.js'
 import OperatorRoute from './Routes/operatorRoute.js'
 import ClientRoute from './Routes/projectRoute.js'
+import SearchRoute from './Routes/searchRoute.js'
 // init application
 dotenv.config()
 const app = express() 
@@ -18,11 +19,8 @@ app.use("/api/staff", StaffRoute)
 app.use("/api/operator", OperatorRoute)
 app.use("/api/client",ClientRoute)
 app.use("/api/admin", adminRoute)
+app.use("/api/search", SearchRoute)
 
-// Api
-app.get("/", (req, res)=>{
-    res.send("all good")
-})
 
 // listening
 const PORT = process.env.PROT || 3015
@@ -31,4 +29,7 @@ app.listen(PORT, ()=> console.log(`we are open on the port ${PORT}...`))
 // err middleWare 
 app.use(NotFound)
 app.use(errHandler)
+
+
+// db Connection 
 dbConnection()

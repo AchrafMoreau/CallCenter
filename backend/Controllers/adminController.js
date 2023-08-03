@@ -184,7 +184,17 @@ const deleteOperator = asyncHandler( async(req, res)=>{
     }
 })
 const viewAllOperator = asyncHandler( async(req, res)=>{
-    const operators = await User.find({}).populate(["role_id", "operatorStatus"])
+    const keyword = req.query.keyword ? 
+    {
+        $or: [
+            {first_name : { $regex : req.query.keyword, $options: 'i', }},
+            {last_name : { $regex : req.query.keyword, $options: 'i', }},
+            {username : { $regex : req.query.keyword, $options: 'i', }},
+            {email : { $regex : req.query.keyword, $options: 'i', }},
+        ]
+    } : {}
+
+    const operators = await User.find(keyword).populate(["role_id", "operatorStatus"])
     if(operators){
         res.status(200).json(operators)
     }else{
